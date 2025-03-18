@@ -1,3 +1,10 @@
+volumes:
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/bdemirbu/Desktop/deneme
+      o: bind
 services:
   nginx:
     build: requirements/nginx
@@ -5,3 +12,11 @@ services:
     ports:
       - "443:443"
     restart: always
+    volumes:
+      - wordpress_volume:/var/www/html
+  wordpress:
+    build: requirements/wordpress
+    container_name: wordpress
+    restart: always
+    volumes:
+      - wordpress_volume:/var/www/html

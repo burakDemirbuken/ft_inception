@@ -1,19 +1,20 @@
-NGNIX_NAME = ngnix
-WORDPRESS_NAME = wordpress
-MARIADB_NAME = mariadb
 
 all: build
 
 build:
-	@sudo docker compose -f srcs/docker-compose.yml up --build
+	@docker compose -f srcs/docker-compose.yml build
+	@docker compose -f srcs/docker-compose.yml up -d
 
 clean: stop
-	@sudo docker system prune -a -f
+	@docker system prune -a -f
 
 stop:
-	@sudo docker compose -f srcs/docker-compose.yml down
+	@docker compose -f srcs/docker-compose.yml down
 
 list:
-	@sudo docker ps -a
+	@docker ps -a
+
+logs:
+	@docker compose -f srcs/docker-compose.yml logs
 
 re: stop build

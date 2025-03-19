@@ -10,6 +10,7 @@ clean: stop
 
 stop:
 	@docker compose -f srcs/docker-compose.yml down
+	@sudo rm -rf /home/burak/Desktop/deneme/*
 
 list:
 	@docker ps -a

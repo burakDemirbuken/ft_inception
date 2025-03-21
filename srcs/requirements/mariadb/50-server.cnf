@@ -1,0 +1,18 @@
+[server]
+[mysqld]
+socket  				= /run/mysqld/mysqld.sock
+bind_address			=*
+port					= 3306
+user                    = mysql
+pid-file                = /run/mysqld/mysqld.pid
+basedir                 = /usr
+datadir                 = /var/lib/mysql
+tmpdir                  = /tmp
+lc-messages-dir         = /usr/share/mysql
+lc-messages             = en_US
+expire_logs_days        = 10
+character-set-server  = utf8mb4
+collation-server      = utf8mb4_general_ci
+[embedded]
+[mariadb]
+[mariadb-10.5]

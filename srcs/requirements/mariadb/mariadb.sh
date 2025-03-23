@@ -51,8 +51,6 @@ echo "${GREEN}Granted all privileges on $DB_NAME to $DB_USERNAME!${RESET}"
 
 mariadb -e "FLUSH PRIVILEGES;"
 
-mariadb -e "SHUTDOWN;"
-
 echo "${GREEN}MariaDB setup completed successfully!${RESET}"
 echo "${BLUE}Starting MariaDB...${RESET}"
 

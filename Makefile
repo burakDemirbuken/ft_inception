@@ -10,7 +10,8 @@ clean: stop
 
 stop:
 	@docker compose -f srcs/docker-compose.yml down
-	@sudo rm -rf /home/bdemirbu/Desktop/deneme/*
+	@sudo rm -rf ${HOME}/Desktop/deneme/*
+	@sudo rm -rf ${HOME}/Desktop/mariadb/*
 
 list:
 	@docker ps -a
@@ -19,3 +20,5 @@ logs:
 	@docker compose -f srcs/docker-compose.yml logs
 
 re: stop build
+
+.PHONY: all build clean stop list logs re

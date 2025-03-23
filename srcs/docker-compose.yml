@@ -1,8 +1,6 @@
 secrets:
   db_password:
     file: ../secrets/db_password.txt
-  db_root_password:
-    file: ../secrets/db_root_password.txt
   credentials:
     file: ../secrets/credentials.txt
 
@@ -15,7 +13,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/bdemirbu/Desktop/deneme
+      device: ${HOME}/Desktop/deneme
+      o: bind
+  mariadb_volume:
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/Desktop/mariadb
       o: bind
 services:
   nginx:
@@ -28,13 +32,15 @@ services:
       - wordpress_volume:/var/www/html
     depends_on:
       - wordpress
+      - mariadb
     networks:
       - my_network
+    expose:
+      - "443"
     env_file:
       - .env
     secrets:
       - db_password
-      - db_root_password
       - credentials
   wordpress:
     build: requirements/wordpress
@@ -48,6 +54,23 @@ services:
       - my_network
     env_file:
       - .env
+    depends_on:
+      - mariadb
+    secrets:
+      - credentials
+      - db_password
   mariadb:
     build: requirements/mariadb
     container_name: mariadb
+    restart: always
+    secrets:
+      - db_password
+      - credentials
+    env_file:
+      - .env
+    volumes:
+      - mariadb_volume:/var/lib/mysql
+    expose:
+      - "3306"
+    networks:
+      - my_network

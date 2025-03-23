@@ -13,7 +13,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${HOME}/Desktop/deneme
+      device: ${HOME}/Desktop/wordpress
       o: bind
   mariadb_volume:
     driver: local
@@ -21,6 +21,7 @@ volumes:
       type: none
       device: ${HOME}/Desktop/mariadb
       o: bind
+
 services:
   nginx:
     build: requirements/nginx

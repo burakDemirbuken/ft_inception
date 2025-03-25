@@ -1,23 +1,25 @@
 #!/bin/sh
 
-if [ -f /run/secrets/credentials ]; then
-	. /run/secrets/credentials
+if [ -f /run/secrets/database ]; then
+	. /run/secrets/database
 else
-	echo "No credentials file found. Please provide the credentials."
+	echo "No credentials file found. Please provide the database info."
 	exit 1
 fi
 
-if [ -f /run/secrets/db_password ]; then
-	. /run/secrets/db_password
+if [ -f /run/secrets/admin ]; then
+	. /run/secrets/admin
 else
-	echo "No db_password file found. Please provide the db_password."
+	echo "No admin file found. Please provide the admin info."
 	exit 1
 fi
 
-echo $DB_NAME
-echo $DB_USERNAME
-echo $DB_PASSWORD
-echo $DB_HOST
+if [ -f /run/secrets/sqluser ]; then
+	. /run/secrets/sqluser
+else
+	echo "No sqluser file found. Please provide the sqluser info."
+	exit 1
+fi
 
 if [ ! -f  /var/www/html/wp-config.php ]; then
 
@@ -31,17 +33,12 @@ if [ ! -f  /var/www/html/wp-config.php ]; then
 		--allow-root
 
 	wp-cli core install \
-		--url=bdemirbu.42.tr \
-		--title=NABERMUDUR \
-		--admin_user=burak_admin \
-		--admin_password=NABERMUDUR \
-		--admin_email=NABERMUDUR@gmail.com \
+		--url=$URL \
+		--title=$TITLE \
+		--admin_user=$ADMIN_USERNAME \
+		--admin_password=$ADMIN_PASSWORD \
+		--admin_email=$ADMIN_MAIL \
 		--skip-email \
-		--allow-root
-
-	wp-cli user create "burak" \
-		"NABERMUDUR@gmail.com" \
-		--user_pass="NABERMUDUR" \
 		--allow-root
 
 fi

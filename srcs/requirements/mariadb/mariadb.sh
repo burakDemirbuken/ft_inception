@@ -7,17 +7,10 @@ BLUE='\033[34m'
 RESET='\033[0m'
 
 echo "${CYAN}Loading secrets...${RESET}"
-if [ -f /run/secrets/credentials ]; then
-	. /run/secrets/credentials
+if [ -f /run/secrets/database ]; then
+	. /run/secrets/database
 else
 	echo "${RED}No credentials file found. Please provide the credentials.${RESET}"
-	exit 1
-fi
-
-if [ -f /run/secrets/db_password ]; then
-	. /run/secrets/db_password
-else
-	echo "${RED}No db_password file found. Please provide the db_password.${RESET}"
 	exit 1
 fi
 
@@ -25,11 +18,6 @@ if [ -z "${DB_NAME}" ] || [ -z "${DB_USERNAME}" ] || [ -z "${DB_PASSWORD}" ]; th
 	echo "${RED}Please set DB_NAME, DB_USERNAME, DB_PASSWORD, and DB_ROOT_PASSWORD environment variables.${RESET}"
 	exit 1
 fi
-
-echo $DB_NAME
-echo $DB_USERNAME
-echo $DB_PASSWORD
-echo $DB_HOST
 
 service mariadb start
 
@@ -50,6 +38,8 @@ mariadb -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USERNAME'@'%';"
 echo "${GREEN}Granted all privileges on $DB_NAME to $DB_USERNAME!${RESET}"
 
 mariadb -e "FLUSH PRIVILEGES;"
+
+service mariadb stop
 
 echo "${GREEN}MariaDB setup completed successfully!${RESET}"
 echo "${BLUE}Starting MariaDB...${RESET}"

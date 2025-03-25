@@ -1,11 +1,11 @@
 
-all: file build
+all: file up
 
-build: file
+up: file
 	@docker compose -f srcs/docker-compose.yml build
 	@docker compose -f srcs/docker-compose.yml up -d
 
-clean: stop file_clean
+clean: down file_clean
 	@docker system prune -a -f
 	@docker volume prune -f
 	@docker network prune -f
@@ -14,7 +14,7 @@ file:
 	@mkdir -p ${HOME}/Desktop/wordpress
 	@mkdir -p ${HOME}/Desktop/mariadb
 
-stop:
+down:
 	@docker compose -f srcs/docker-compose.yml down
 
 file_clean:
@@ -29,6 +29,6 @@ logs:
 
 rf: file_clean re
 
-re: stop build
+re: down up
 
-.PHONY: all build clean stop list logs re
+.PHONY: all up clean down list logs re

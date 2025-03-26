@@ -11,15 +11,16 @@ clean: down file_clean
 	@docker network prune -f
 
 file:
-	@mkdir -p ${HOME}/Desktop/wordpress
-	@mkdir -p ${HOME}/Desktop/mariadb
+	@mkdir -p ${HOME}/data
+	@mkdir -p ${HOME}/data/wordpress
+	@mkdir -p ${HOME}/data/mariadb
 
 down:
 	@docker compose -f srcs/docker-compose.yml down
 
 file_clean:
-	@sudo rm -rf ${HOME}/Desktop/wordpress
-	@sudo rm -rf ${HOME}/Desktop/mariadb
+	@sudo rm -rf ${HOME}/data/wordpress
+	@sudo rm -rf ${HOME}/data/mariadb
 
 list:
 	@docker ps -a
@@ -28,6 +29,8 @@ logs:
 	@docker compose -f srcs/docker-compose.yml logs
 
 rf: file_clean re
+
+rc: clean re
 
 re: down up
 

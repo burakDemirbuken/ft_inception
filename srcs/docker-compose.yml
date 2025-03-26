@@ -1,8 +1,8 @@
 secrets:
   database:
     file: ../secrets/database.txt
-  sqluser:
-    file: ../secrets/sqluser.txt
+  other_user:
+    file: ../secrets/other_user.txt
   admin:
     file: ../secrets/admin.txt
 
@@ -16,18 +16,19 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ${HOME}/Desktop/wordpress
+      device: ${HOME}/data/wordpress
       o: bind
   mariadb_volume:
     driver: local
     driver_opts:
       type: none
-      device: ${HOME}/Desktop/mariadb
+      device: ${HOME}/data/mariadb
       o: bind
 
 services:
   nginx:
     build: requirements/nginx
+    image: nginx:4.2
     container_name: nginx
     ports:
       - "443:443"
@@ -41,12 +42,10 @@ services:
       - my_network
     expose:
       - "443"
-    env_file:
-      - .env
-    secrets:
-      - database
+
   wordpress:
     build: requirements/wordpress
+    image: wordpress:4.2
     container_name: wordpress
     restart: always
     volumes:
@@ -61,16 +60,16 @@ services:
       - mariadb
     secrets:
       - database
-      - sqluser
       - admin
+      - other_user
+
   mariadb:
     build: requirements/mariadb
+    image: mariadb:4.2
     container_name: mariadb
     restart: always
     secrets:
       - database
-    env_file:
-      - .env
     volumes:
       - mariadb_volume:/var/lib/mysql
     expose:

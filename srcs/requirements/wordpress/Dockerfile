@@ -7,9 +7,9 @@ RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.ph
 
 RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
 
-COPY ./www.conf /etc/php/7.4/fpm/pool.d/www.conf
+COPY ./conf/www.conf /etc/php/7.4/fpm/pool.d/www.conf
 
-COPY ./init.sh /usr/local/bin/init.sh
+COPY ./tool/init.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 
 WORKDIR /var/www/html
